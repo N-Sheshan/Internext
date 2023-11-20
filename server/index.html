@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connected Clients</title>
+</head>
+<body>
+    <h1>Connected Clients:</h1>
+    <ul>
+        <% connectedClients.forEach(client => { %>
+            <li><%= client %></li>
+        <% }); %>
+    </ul>
+
+    <script>
+        const socket = new WebSocket("ws://localhost:3000/connectedClients");
+
+        socket.onmessage = function(event) {
+            const connectedClients = JSON.parse(event.data);
+            const listElement = document.querySelector("ul");
+            listElement.innerHTML = connectedClients.map(client => `<li>${client}</li>`).join("");
+        };
+    </script>
+</body>
+</html>
